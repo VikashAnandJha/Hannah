@@ -11,17 +11,13 @@ var peerList=[];
 var isCordova=false;
 var videoOptions = {
       audio: true,
-    video: {
-    mandatory: {
-        
-            width: 1920,
-            height: 1080,
-        
+      video: {
+        width: 1920,
+        height: 1080,
         frameRate: {
-            ideal: 25,
-            min: 15
+            ideal: 60,
+            min: 25
         }
-    }
     }
 };
 function createRoom() {
