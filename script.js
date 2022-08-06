@@ -8,6 +8,15 @@ var peer = null;
 var currentPeer = null
 var screenSharing = false
 var peerList=[];
+var isCordova=false;
+var videoOptions = {
+    video: {
+    mandatory: {
+        minWidth: 1280,
+        minHeight: 720
+    }
+    }
+};
 function createRoom() {
     console.log("Creating Room")
     let room = document.getElementById("room-input").value;
@@ -20,7 +29,7 @@ function createRoom() {
     peer.on('open', (id) => {
         console.log("Peer Connected with ID: ", id)
         hideModal()
-        getUserMedia({ video: true, audio: true }, (stream) => {
+        getUserMedia(videoOptions, (stream) => {
             local_stream = stream;
             setLocalStream(local_stream)
         }, (err) => {
@@ -81,7 +90,7 @@ function joinRoom() {
         console.log("Connected with Id: " + id)
         
 
-        getUserMedia({ video: true, audio: true }, (stream) => {
+        getUserMedia(videoOptions, (stream) => {
             local_stream = stream;
             setLocalStream(local_stream)
             notify("Joining peer")
