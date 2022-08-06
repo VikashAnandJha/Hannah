@@ -1,0 +1,149 @@
+body{
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.title{
+    top: 0;
+    width: 100%;
+    max-width: 100%;
+    z-index: 1;
+    display: block;
+  
+    position: absolute;
+    background-color: #444444;
+    color: white;
+   margin: 0;
+}
+
+.entry-modal{
+    border: 1px solid #444444;
+    width: 300px;
+    margin: auto;
+    z-index: 9999;
+    position: absolute;
+    left: 50%;
+    top: 70;
+    margin-left: -150px;
+    padding: 5px;
+    color: #fff;
+    background-color: #444444;
+    text-align: center;
+}
+
+#notification{
+    position: absolute;
+    
+    text-align: center;
+    color: #fff;
+    margin: 0;
+    top: 0;
+    font-size: 18pt;
+    width: 80%;
+    background-color: orange;
+}
+
+
+.room-input{
+  border: none;
+  padding:5px;
+}
+
+button{
+    margin: 3px;
+    padding: 5px;
+}
+
+#remote-video{
+    top: 0;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    background-color: lightgray;
+    object-fit: contain;
+    
+    position: absolute;
+    border-radius: 10px;
+    border: 2px solid white;
+    
+}
+
+#local-video{
+     
+    width: 300px;
+    object-fit: contain;
+    height: 150;
+   
+    background-color: #444444;
+    border-radius: 10px;
+    border: 2px solid white;
+   
+}
+.participants{
+    position: absolute;
+    z-index: 101;
+    right: 15;
+}
+.meet-controls-bar{
+    bottom: 0;
+    background-color: black;
+    left: 0;
+    
+    width: 100%;
+}
+
+.controlBtn{
+    width: 52px;
+    height: 52px;
+    border-radius: 25px;
+}
+.upit{
+    position: fixed;
+    bottom: 10px;
+    z-index: 102; 
+    width: 100%;
+}
+.red{
+    background-color: red;
+    padding: 2px;
+
+}
+.green{
+     
+    padding: 2px;
+}
+
+@media (min-width: 320px) and (max-width: 1024px) {
+    #remote-video{
+        top: 0;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        background-color: lightgray;
+        object-fit: contain;
+        z-index: 100;
+        position: absolute;
+        border-radius: 10px;
+        border: 2px solid white;
+        
+    }
+    
+    #local-video{
+         
+        max-height: 150px;
+        width: 100px;
+        object-fit: cover;
+        height: 150;
+        
+        background-color: #444444;
+        border-radius: 10px;
+        border: 2px solid white;
+       
+    }
+    .participants{
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    
+    }
+  }
