@@ -13,8 +13,8 @@ var videoOptions = {
       audio: true,
     video: {
     mandatory: {
-        minWidth: 1280,
-        minHeight: 720,
+        minWidth: 1920,
+        minHeight: 1080,
         frameRate: {
             ideal: 60,
             min: 25
