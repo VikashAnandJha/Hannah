@@ -12,11 +12,11 @@ var isCordova=false;
 var videoOptions = {
       audio: true,
       video: {
-        width: 1920,
-        height: 1080,
+        width: 1280,
+        height: 720,
         frameRate: {
-            ideal: 60,
-            min: 25
+            ideal: 30,
+            min: 15
         }
     }
 };
