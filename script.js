@@ -43,6 +43,7 @@ function setLocalStream(stream) {
     video.srcObject = stream;
     video.muted = true;
     video.play();
+    showAfter();
 }
 function setRemoteStream(stream) {
 
@@ -50,6 +51,7 @@ function setRemoteStream(stream) {
     video.srcObject = stream;
     video.play();
     remoteStream=stream;
+    showAfter();
 }
 
 function hideModal() {
@@ -77,6 +79,7 @@ function joinRoom() {
     peer = new Peer()
     peer.on('open', (id) => {
         console.log("Connected with Id: " + id)
+        
 
         getUserMedia({ video: true, audio: true }, (stream) => {
             local_stream = stream;
@@ -216,3 +219,11 @@ const webcamOff=function(){//toggle state
          webcam_on=false;
      }
 };
+
+function showAfter(){
+console.log("show")
+    setTimeout(function(){
+        $('.after').show();
+    },100)
+   
+}
