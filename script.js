@@ -10,6 +10,7 @@ var screenSharing = false
 var peerList=[];
 var isCordova=false;
 var videoOptions = {
+      audio: true,
     video: {
     mandatory: {
         minWidth: 1280,
