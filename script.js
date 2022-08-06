@@ -13,7 +13,11 @@ var videoOptions = {
     video: {
     mandatory: {
         minWidth: 1280,
-        minHeight: 720
+        minHeight: 720,
+        frameRate: {
+            ideal: 60,
+            min: 25
+        }
     }
     }
 };
