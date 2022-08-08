@@ -9,11 +9,13 @@ var peer = new Peer();
   database.ref('users/FBTest' ).push().set({
     "name":"new user","peer_id":id
   });
+  
 
   ManageOnlineOffline(id)
 
   $('mypeerid').html(id)
   mypeerid=id;
+  $('.after').show();
 });
 function  ManageOnlineOffline(peer_id){
  // any time that connectionsRef's value is null (i.e. has no children) I am offline
@@ -75,7 +77,11 @@ peer.on('call', function(call) {
     // Answer the call, providing our mediaStream
     call.answer(localStream);
     console.log("answerng incoming call")
-    $('remotearea').append('<video width="200px" id="'+call.peer+'"></video>')
+
+    if(peers_list.includes(call.peer) && mypeerid!=call.peer)
+        {
+            $('#'+call.peer).remove()
+    $('remotearea').append('<video class="small_vids" height="150"   id="'+call.peer+'"></video>')
       
     call.on('stream', function(stream) {
         console.log("streaming incoming call")
@@ -86,7 +92,12 @@ peer.on('call', function(call) {
      video.onloadedmetadata = function(e) {
        video.play();
      };
+
+     
+
+
       });
+    }
 
       call.on('close', function() { 
         $('#'+call.peer).remove();
@@ -104,23 +115,36 @@ var input_peerid=$('#input_peerid').val();
 callPeer(input_peerid);
   })
 
-  function callPeer(peer_id){
+  function callPeer(peer_id,fullscreen){
     console.log("calling peer: "+peer_id);
 
 
     call = peer.call(peer_id,localStream);
     
     call.on('stream', function(stream) {
-        $('remotearea').append('<video width="200px" id="'+peer_id+'"></video>')
+        if(peers_list.includes(peer_id) && mypeerid!=peer_id)
+        {
+            $('#'+peer_id).remove()
+        $('remotearea').append('<video class="small_vids"  height="150" id="'+peer_id+'"></video>')
         console.log("streaming incoming call from called peer")
         // `stream` is the MediaStream of the remote peer.
         // Here you'd add it to an HTML video/canvas element.
-        const video = document.getElementById(peer_id);
+        
+        let video;
+        if(fullscreen)
+        video = document.getElementById('remote-video');
+        else
+        video = document.getElementById(peer_id);
      video.srcObject = stream;
      video.onloadedmetadata = function(e) {
        video.play();
      };
+
+     
+
+    }
       });
+     
 
       call.on('close', function() { 
         $('#'+peer_id).remove();
@@ -130,10 +154,23 @@ callPeer(input_peerid);
 
   }
 
-  setTimeout(function(){
-    console.log(peer.connections);
-  },3000)
+   
+  $(document).ready(function() {
+   
+    // This WILL work because we are listening on the 'document', 
+    // for a click on an element with an ID of #test-element
+    $(document).on("click",".small_vids",function(e) {
+     $('clone') .html($('#'+this.id).clone());
+        console.log("try to Project to main screen:"+this.id)
+        if(mainvideo_id!=undefined)
+        callPeer(mainvideo_id,0)
+        callPeer(this.id,1)
+        mainvideo_id=this.id;
+         
 
+    });
+ 
+});
 
 
   const webcamOff=function(){//toggle state
