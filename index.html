@@ -24,12 +24,52 @@
             
             <br>
             <h2>Fast,Relaible & Secure Video Meetings </h2>
+            <div class="entry-modal" id="entry-modal">
+                       
+                <p>Create or Join Meeting</p>
+                <input id="room-input-join" class="room-input-join" placeholder="Enter Room ID">
+                 
+                    <button onclick="joinRoom()" class="btn btn-primary">Join A Meeting</button>
+<hr> 
+                 
+<button onclick="createRoom()" class="btn btn-primary">Create A Meeting</button>
+                    </div>
         </div>
 
         <script>
-            setTimeout(window.location.href="home.html",4000)
+            function createRoom()
+            {
+                console.log("Creating Room")
+    
+    var room_id= (Math.random() + 1).toString(36).substring(2);
+    window.location.href="home2.html?room_code="+room_id;
+
+            }
+
+            function joinRoom()
+            {
+                var room;
+                console.log("Joining Room")
+    if(room==undefined)
+      room = document.getElementById("room-input-join").value;
+    if (room == " " || room == "") {
+        alert("Please enter room number")
+        return;
+    }
+    window.location.href="home2.html?room_code="+room;
+
+    
+            }
+           
+   
+         //   setTimeout(window.location.href="home.html",4000)
         </script>
        
+       <style>
+        input,button{
+            padding: 10px;
+        }
+       </style>
 
     </body>
 </html>

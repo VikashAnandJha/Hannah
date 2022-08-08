@@ -1,0 +1,62 @@
+<html>
+    <body>
+        local<br>
+        <video id="localVideo" playsinline controls loop muted>
+                      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"/>
+            <p>This browser does not support the video element.</p>
+        </video>
+
+      <hr>
+        clone<br>
+          <video id="cloneVideo" width="200" playsinline controls loop muted>
+              </video>
+<script>
+   
+
+// navigator.getUserMedia = navigator.getUserMedia ||
+//                          navigator.webkitGetUserMedia ||
+//                          navigator.mozGetUserMedia;
+
+
+// if (navigator.getUserMedia) {
+//    navigator.getUserMedia({ audio: false, video: { width: 1280, height: 720 } },
+//       function(stream) {
+          
+//  localStream=stream;
+
+//  const video = document.getElementById('localVideox');
+//  video.srcObject = stream;
+//  video.onloadedmetadata = function(e) {
+//    video.play();
+//  };
+
+
+//       },
+//       function(err) {
+//          console.error(`The following error occurred: ${err.name}`);
+//       }
+//    );
+// } else {
+//    console.log("getUserMedia not supported");
+// }
+
+const leftVideo = document.getElementById('localVideo');
+const rightVideo = document.getElementById('cloneVideo');
+
+leftVideo.addEventListener('canplay', () => {
+  let stream;
+  const fps = 0;
+  if (leftVideo.captureStream) {
+    stream = leftVideo.captureStream(fps);
+  } else if (leftVideo.mozCaptureStream) {
+    stream = leftVideo.mozCaptureStream(fps);
+  } else {
+    console.error('Stream capture is not supported');
+    stream = null;
+  }
+  rightVideo.srcObject = stream;
+});
+</script>
+
+    </body>
+</html>

@@ -1,14 +1,30 @@
+
+
+
+
+var room_id = getParameterByName('room_code'); 
+
+
  var localStream;
  var call;
  var mypeerid;
+ var videoOptions = {
+    audio: true,
+    video: {
+      width: 1280,
+      height: 720,
+      frameRate: {
+          ideal: 30,
+          min: 15
+      }
+  }
+};
 var peer = new Peer();
 
   peer.on('open', function(id) {
   console.log('My peer ID is: ' + id);
 
-  database.ref('users/FBTest' ).push().set({
-    "name":"new user","peer_id":id
-  });
+   
   
 
   ManageOnlineOffline(id)
@@ -19,7 +35,7 @@ var peer = new Peer();
 });
 function  ManageOnlineOffline(peer_id){
  // any time that connectionsRef's value is null (i.e. has no children) I am offline
- var roomsRef = firebase.database().ref('users/rooms/testroom/users/'+peer_id);
+ var roomsRef = firebase.database().ref('users/rooms/'+room_id+'/users/'+peer_id);
  
  var connectedRef = firebase.database().ref('.info/connected');
  connectedRef.on('value', (snap) => {
@@ -49,7 +65,7 @@ navigator.getUserMedia = navigator.getUserMedia ||
 
 
 if (navigator.getUserMedia) {
-   navigator.getUserMedia({ audio: false, video: { width: 1280, height: 720 } },
+   navigator.getUserMedia(videoOptions,
       function(stream) {
           
  localStream=stream;
@@ -140,6 +156,23 @@ callPeer(input_peerid);
        video.play();
      };
 
+     setInterval(function(){
+        if(active_id==undefined || active_id!=peer_id)
+        if(mainvideo_id!=undefined && mainvideo_id==peer_id)
+        {
+           
+           video = document.getElementById('remote-video');
+           
+        video.srcObject = stream;
+        video.onloadedmetadata = function(e) {
+          video.play();
+          active_id=peer_id;
+   
+        }
+       }
+   
+     },2000)
+     
      
 
     }
@@ -162,9 +195,9 @@ callPeer(input_peerid);
     $(document).on("click",".small_vids",function(e) {
      $('clone') .html($('#'+this.id).clone());
         console.log("try to Project to main screen:"+this.id)
-        if(mainvideo_id!=undefined)
-        callPeer(mainvideo_id,0)
-        callPeer(this.id,1)
+        // if(mainvideo_id!=undefined)
+        // callPeer(mainvideo_id,0)
+        // callPeer(this.id,1)
         mainvideo_id=this.id;
          
 
@@ -172,7 +205,7 @@ callPeer(input_peerid);
  
 });
 
-
+var webcam_on=true;
   const webcamOff=function(){//toggle state
    
     console.log("trying to off/on")
@@ -195,4 +228,112 @@ callPeer(input_peerid);
          $('#webcam').addClass("red");
          webcam_on=false;
      }
+};
+
+var mic_on=true;
+const micOff=function(){//toggle state
+   
+    local_stream=localStream;
+     
+    local_stream.getAudioTracks()[0].enabled = !local_stream.getAudioTracks()[0].enabled;
+
+    if(local_stream.getAudioTracks()[0]!=undefined && local_stream.getAudioTracks()[0].enabled)
+    {
+        
+        $('#mic').removeClass("red");
+     $('#mic').addClass("green");
+     mic_on=true;
+     console.log(mic_on+" greenzone")
+    } 
+     else
+     {
+        console.log(mic_on+" redzone")
+        $('#mic').removeClass("green");
+         $('#mic').addClass("red");
+         mic_on=false;
+     }
+};
+
+var speaker_on=true;
+const speakerOff=function(){//toggle state
+
+    if(speaker_on)
+    {
+        $('#speaker').removeClass("green");
+        $('#speaker').addClass("red");
+        speaker_on=false;
+
+        document.querySelectorAll('audio, video').forEach(el => el.muted = true)
+   
+   console.log("all sound muted")
+    }else{
+        speaker_on=true;
+
+        $('#speaker').removeClass("red");
+        $('#speaker').addClass("green");
+        document.querySelectorAll('audio, video').forEach(el => el.muted = false)
+   
+        console.log("all sound on")
+    }
+    
+};
+
+var screenSharing=false;
+function startScreenShare() {
+    if (screenSharing) {
+        stopScreenSharing()
+    }
+    navigator.mediaDevices.getDisplayMedia({videoOptions}).then((stream) => {
+        screenStream = stream;
+        let videoTrack = screenStream.getVideoTracks()[0];
+        videoTrack.onended = () => {
+            stopScreenSharing()
+        }
+
+
+        // for(var i=0;i<peers_list.length;i++)
+        // call()
+
+
+        // if (peer) {
+        //     let sender = currentPeer.peerConnection.getSenders().find(function (s) {
+        //         return s.track.kind == videoTrack.kind;
+        //     })
+        //     sender.replaceTrack(videoTrack)
+        //     screenSharing = true
+        // }
+        console.log(screenStream)
+    })
+}
+
+function stopScreenSharing() {
+    if (!screenSharing) return;
+    let videoTrack = local_stream.getVideoTracks()[0];
+    if (peer) {
+        let sender = currentPeer.peerConnection.getSenders().find(function (s) {
+            return s.track.kind == videoTrack.kind;
+        })
+        sender.replaceTrack(videoTrack)
+    }
+    screenStream.getTracks().forEach(function (track) {
+        track.stop();
+    });
+    screenSharing = false
+}
+
+
+
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+const callCut=function(){//toggle state
+   
+    console.log("closing");
+     window.location.href="index.html";
+      
 };
