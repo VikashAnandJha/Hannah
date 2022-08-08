@@ -346,11 +346,31 @@ function startScreenShare() {
 
 function stopScreenSharing() {
     if (!screenSharing) return;
-    for(var i=0;i<peers_list.length;i++)
+    navigator.getUserMedia(videoOptions,
+      function(stream) {
+          
+ localStream=stream;
+
+ for(var i=0;i<peers_list.length;i++)
     {
-      callPeer(peers_list[i],false)
-    //call = peer.call(peers_list[i],localStream);
+      //callPeer(peers_list[i],false)
+    call = peer.call(peers_list[i],localStream);
     }
+
+ const video = document.getElementById('localVideo');
+ video.srcObject = stream;
+ video.onloadedmetadata = function(e) {
+   video.play();
+   cloneTOMain('localVideo')
+ };
+
+
+      },
+      function(err) {
+         console.error(`The following error occurred: ${err.name}`);
+      }
+   );
+    
     screenSharing = false
     console.log("Screen sharing stopped")
     screenStream.getTracks().forEach(function (track) {
