@@ -28,8 +28,8 @@
          
                             <div class="meet-area">
                                
-                                <video id="remote-video" class="remote-video-main"></video> 
-                               
+                                <video muted   id="remote-video" class="remote-video-main"></video> 
+                                 
                                 </div>
                     <div class="meet-controls-bar">
                         <button onclick="startScreenShare()">Screen Share</button>
@@ -40,7 +40,7 @@
                     <img src="./assets/logo.png"  class="logo " />
 
                     <div class="participants after"  >
-                        <video id="localVideo" muted class="local-video"  ></video> 
+                        <video id="localVideo" muted class="local-video small_vids"  ></video> 
                         <remotearea></remotearea>
                     </div>
                    
@@ -50,18 +50,12 @@
             </div>
             
             <div class="row upit after" style="display: none;">
-                <div class="col-md-12">
-                    <button class="green"  ><img onclick="copy()" src="./assets/copy.png" width="20px"></button>
-                    Your Meeting Link <br>
-
-                    <input class="meetinglink" type="text" id="meetinglink">
-
-                </div>
-                <div class="col-md-4 offset-md-4">
+                
+                <div class="col-lg-6 offset-md-3">
                     <button class="controlBtn" id="mic" onclick="micOff()"><img src="./assets/mic_off.png" width="24px"/></button>
                     <button class="controlBtn" id="speaker" onclick="speakerOff()"><img src="./assets/speaker_off.png" width="24px"/></button>
                     <button class="controlBtn" id="webcam" onclick="webcamOff()"><img src="./assets/video_off.png" width="24px"/></button>
-                    <button class="controlBtn" id="sharescreen" onclick="startScreenShare()" style="display: none;"><img src="./assets/present.png" width="24px"/></button>
+                    <button class="controlBtn" id="sharescreen" onclick="startScreenShare()"  ><img src="./assets/present.png" width="24px"/></button>
                     <button class="controlBtn red" id="callcut" onclick="callCut()"><img src="./assets/call_cut.png" width="24px"/></button>
                   
 

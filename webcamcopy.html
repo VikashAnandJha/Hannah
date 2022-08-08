@@ -1,44 +1,47 @@
 <html>
     <body>
         local<br>
-        <video id="localVideo" playsinline controls loop muted>
-                      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"/>
-            <p>This browser does not support the video element.</p>
+        <video width="200" id="localVideo" playsinline controls loop muted>
+                       <p>This browser does not support the video element.</p>
         </video>
 
       <hr>
         clone<br>
-          <video id="cloneVideo" width="200" playsinline controls loop muted>
+          <video id="cloneVideo" width="200" autoplay playsinline controls loop muted>
               </video>
+
+              <button>Share stream</button>
+              <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        
 <script>
    
 
-// navigator.getUserMedia = navigator.getUserMedia ||
-//                          navigator.webkitGetUserMedia ||
-//                          navigator.mozGetUserMedia;
+navigator.getUserMedia = navigator.getUserMedia ||
+                         navigator.webkitGetUserMedia ||
+                         navigator.mozGetUserMedia;
 
 
-// if (navigator.getUserMedia) {
-//    navigator.getUserMedia({ audio: false, video: { width: 1280, height: 720 } },
-//       function(stream) {
+if (navigator.getUserMedia) {
+   navigator.getUserMedia({ audio: false, video: { width: 1280, height: 720 } },
+      function(stream) {
           
-//  localStream=stream;
+ localStream=stream;
 
-//  const video = document.getElementById('localVideox');
-//  video.srcObject = stream;
-//  video.onloadedmetadata = function(e) {
-//    video.play();
-//  };
+ const video = document.getElementById('localVideo');
+ video.srcObject = stream;
+ video.onloadedmetadata = function(e) {
+   video.play();
+ };
 
 
-//       },
-//       function(err) {
-//          console.error(`The following error occurred: ${err.name}`);
-//       }
-//    );
-// } else {
-//    console.log("getUserMedia not supported");
-// }
+      },
+      function(err) {
+         console.error(`The following error occurred: ${err.name}`);
+      }
+   );
+} else {
+   console.log("getUserMedia not supported");
+}
 
 const leftVideo = document.getElementById('localVideo');
 const rightVideo = document.getElementById('cloneVideo');
@@ -56,6 +59,38 @@ leftVideo.addEventListener('canplay', () => {
   }
   rightVideo.srcObject = stream;
 });
+
+$('button').click(function(){
+  
+    
+  
+    var displayMediaOptions = {
+      video: {
+          cursor: "always"
+      },
+      audio: false
+  };
+  
+  navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
+  .then(function (stream) {
+    const video = document.getElementById('localVideo');
+
+    video.srcObject = stream;
+ video.onloadedmetadata = function(e) {
+   video.play();
+ };
+  });
+
+       
+
+
+         
+            screenSharing = true
+         
+        
+
+})
+
 </script>
 
     </body>

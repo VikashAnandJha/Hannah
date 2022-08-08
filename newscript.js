@@ -3,7 +3,8 @@
 
 
 var room_id = getParameterByName('room_code'); 
-
+var screenSharing=false;
+var screenStream;
 
  var localStream;
  var call;
@@ -11,11 +12,11 @@ var room_id = getParameterByName('room_code');
  var videoOptions = {
     audio: true,
     video: {
-      width: 1280,
-      height: 720,
+      width: 720,
+      height: 480,
       frameRate: {
           ideal: 30,
-          min: 15
+          min: 5
       }
   }
 };
@@ -104,6 +105,7 @@ peer.on('call', function(call) {
         // `stream` is the MediaStream of the remote peer.
         // Here you'd add it to an HTML video/canvas element.
         const video = document.getElementById(call.peer);
+
      video.srcObject = stream;
      video.onloadedmetadata = function(e) {
        video.play();
@@ -156,22 +158,22 @@ callPeer(input_peerid);
        video.play();
      };
 
-     setInterval(function(){
-        if(active_id==undefined || active_id!=peer_id)
-        if(mainvideo_id!=undefined && mainvideo_id==peer_id)
-        {
+    //  setInterval(function(){
+    //     if(active_id==undefined || active_id!=peer_id)
+    //     if(mainvideo_id!=undefined && mainvideo_id==peer_id)
+    //     {
            
-           video = document.getElementById('remote-video');
+    //        video = document.getElementById('remote-video');
            
-        video.srcObject = stream;
-        video.onloadedmetadata = function(e) {
-          video.play();
-          active_id=peer_id;
+    //     video.srcObject = stream;
+    //     video.onloadedmetadata = function(e) {
+    //       video.play();
+    //       active_id=peer_id;
    
-        }
-       }
+    //     }
+    //    }
    
-     },2000)
+    //  },2000)
      
      
 
@@ -199,6 +201,14 @@ callPeer(input_peerid);
         // callPeer(mainvideo_id,0)
         // callPeer(this.id,1)
         mainvideo_id=this.id;
+
+ 
+       
+      cloneTOMain(mainvideo_id)
+        
+
+
+
          
 
     });
@@ -278,47 +288,90 @@ const speakerOff=function(){//toggle state
     
 };
 
-var screenSharing=false;
+function cloneTOMain(mainvideo_id)
+{
+  const leftVideo = document.getElementById(mainvideo_id);
+  console.log(leftVideo)
+  const rightVideo = document.getElementById('remote-video');
+    
+     let stream;
+     const fps = 0;
+     if (leftVideo.captureStream) {
+       stream = leftVideo.captureStream(fps);
+     } else if (leftVideo.mozCaptureStream) {
+       stream = leftVideo.mozCaptureStream(fps);
+     } else {
+       console.error('Stream capture is not supported');
+       stream = null;
+     }
+     rightVideo.srcObject = stream;
+     rightVideo.play();
+}
+
+
 function startScreenShare() {
     if (screenSharing) {
         stopScreenSharing()
     }
-    navigator.mediaDevices.getDisplayMedia({videoOptions}).then((stream) => {
-        screenStream = stream;
-        let videoTrack = screenStream.getVideoTracks()[0];
+  
+    var displayMediaOptions = {
+      video: {
+          cursor: "always"
+      },
+      audio: false
+  };
+  
+  navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
+  .then(function (stream) {
+    let videoTrack = stream.getVideoTracks()[0];
+    const rightVideo = document.getElementById('localVideo');
+     
         videoTrack.onended = () => {
+
+          rightVideo.srcObject = localStream;
             stopScreenSharing()
+            cloneTOMain('localVideo')
         }
+        
+        
+        rightVideo.srcObject = stream;
+        rightVideo.play();
+        cloneTOMain('localVideo')
 
 
-        // for(var i=0;i<peers_list.length;i++)
-        // call()
+  screenStream=stream;
+
+    for(var i=0;i<peers_list.length;i++)
+    {
+      console.log(peers_list[i])
+       
+    call = peer.call(peers_list[i],stream);
+    
+    
+    }
+  });
 
 
-        // if (peer) {
-        //     let sender = currentPeer.peerConnection.getSenders().find(function (s) {
-        //         return s.track.kind == videoTrack.kind;
-        //     })
-        //     sender.replaceTrack(videoTrack)
-        //     screenSharing = true
-        // }
-        console.log(screenStream)
-    })
+
+
+         
+            screenSharing = true
+         
+        
 }
 
 function stopScreenSharing() {
     if (!screenSharing) return;
-    let videoTrack = local_stream.getVideoTracks()[0];
-    if (peer) {
-        let sender = currentPeer.peerConnection.getSenders().find(function (s) {
-            return s.track.kind == videoTrack.kind;
-        })
-        sender.replaceTrack(videoTrack)
+    for(var i=0;i<peers_list.length;i++)
+    {
+       
+    call = peer.call(peers_list[i],localStream);
     }
-    screenStream.getTracks().forEach(function (track) {
-        track.stop();
-    });
     screenSharing = false
+    console.log("Screen sharing stopped")
+    screenStream.getTracks().forEach(function (track) {
+      track.stop();
+  });
 }
 
 
