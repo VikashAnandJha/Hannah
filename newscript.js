@@ -158,22 +158,6 @@ callPeer(input_peerid);
        video.play();
      };
 
-    //  setInterval(function(){
-    //     if(active_id==undefined || active_id!=peer_id)
-    //     if(mainvideo_id!=undefined && mainvideo_id==peer_id)
-    //     {
-           
-    //        video = document.getElementById('remote-video');
-           
-    //     video.srcObject = stream;
-    //     video.onloadedmetadata = function(e) {
-    //       video.play();
-    //       active_id=peer_id;
-   
-    //     }
-    //    }
-   
-    //  },2000)
      
      
 
@@ -191,7 +175,7 @@ callPeer(input_peerid);
 
    
   $(document).ready(function() {
-   
+    cloneTOMain('localVideo');
     // This WILL work because we are listening on the 'document', 
     // for a click on an element with an ID of #test-element
     $(document).on("click",".small_vids",function(e) {
@@ -344,8 +328,8 @@ function startScreenShare() {
     for(var i=0;i<peers_list.length;i++)
     {
       console.log(peers_list[i])
-       
-    call = peer.call(peers_list[i],stream);
+      //callPeer(peers_list[i],false)
+   call = peer.call(peers_list[i],stream);
     
     
     }
@@ -364,8 +348,8 @@ function stopScreenSharing() {
     if (!screenSharing) return;
     for(var i=0;i<peers_list.length;i++)
     {
-       
-    call = peer.call(peers_list[i],localStream);
+      callPeer(peers_list[i],false)
+    //call = peer.call(peers_list[i],localStream);
     }
     screenSharing = false
     console.log("Screen sharing stopped")
