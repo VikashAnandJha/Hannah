@@ -65,7 +65,10 @@ input{
             
             <br>
             <h2>Fast,Relaible & <b style="color: yellow;">Secure</b> Video Meetings </h2>
-            <div class="entry-modal" id="entry-modal">
+          
+            <img src="./assets/loading.gif" id="loading" width="50"/>
+           
+            <div style="display: none;" class="entry-modal" id="entry-modal">
                        
                 <p>Create or Join Meeting</p>
                 <input id="room-input-join" class="room-input-join" placeholder="Enter Room ID">
@@ -76,6 +79,16 @@ input{
 <button onclick="createRoom()" class="btn btn-primary" style="background-color:#15E8D8; color:#161B21">Create A Meeting</button>
                     </div>
         </div>
+
+        <script>
+            setTimeout(function(){
+                document.getElementById('loading').style.display = "none";
+            },1500) ;
+            setTimeout(function(){
+
+                document.getElementById('entry-modal').style.display = "block";
+            },2000)
+        </script>
 
         <script>
             function createRoom()
