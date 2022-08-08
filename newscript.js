@@ -387,6 +387,25 @@ function getParameterByName(name, url = window.location.href) {
 const callCut=function(){//toggle state
    
     console.log("closing");
-     window.location.href="index.html";
+    handlePeerDisconnect()
+     //window.location.href="index.html";
       
 };
+
+
+function handlePeerDisconnect() {
+  // manually close the peer connections
+  for (let conns in peer.connections) {
+    peer.connections[conns].forEach((conn, index, array) => {
+      console.log(`closing ${conn.connectionId} peerConnection (${index + 1}/${array.length})`, conn.peerConnection.id);
+      
+      
+      conn.peerConnection.close();
+
+      // close it using peerjs methods
+      if (conn.close)
+        conn.close();
+    });
+  }
+  window.location.href="index.html";
+}

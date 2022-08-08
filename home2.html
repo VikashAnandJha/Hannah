@@ -132,9 +132,18 @@ console.log(window.location.href)
             console.log(childKey)
             //new user
             $('list').append('<p id="'+childKey+'">'+childKey+' </p>')
-            peers_list.push(childKey)
+           
     
-        callPeer(childKey,false)
+            if(childKey==mypeerid){
+
+                console.log("skipping my own peer id")
+                
+
+            }else
+        {
+            peers_list.push(childKey)
+            callPeer(childKey,false)
+        }
               }    // database.ref('users/FBTest/'+childKey).onDisconnect().remove();
           // ...
         });
