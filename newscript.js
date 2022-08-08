@@ -5,9 +5,40 @@ var peer = new Peer();
 
   peer.on('open', function(id) {
   console.log('My peer ID is: ' + id);
+
+  database.ref('users/FBTest' ).push().set({
+    "name":"new user","peer_id":id
+  });
+
+  ManageOnlineOffline(id)
+
   $('mypeerid').html(id)
   mypeerid=id;
 });
+function  ManageOnlineOffline(peer_id){
+ // any time that connectionsRef's value is null (i.e. has no children) I am offline
+ var roomsRef = firebase.database().ref('users/rooms/testroom/users/'+peer_id);
+ 
+ var connectedRef = firebase.database().ref('.info/connected');
+ connectedRef.on('value', (snap) => {
+   if (snap.val() === true) {
+
+
+     // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
+     var con = roomsRef.push();
+ 
+     // When I disconnect, remove this device
+     con.onDisconnect().remove();
+ 
+     // Add this device to my connections list
+     // this value could contain info about the device or a timestamp too
+     con.set(true);
+ 
+      
+   }
+ });
+ 
+}
 
 
 navigator.getUserMedia = navigator.getUserMedia ||

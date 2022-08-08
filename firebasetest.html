@@ -15,6 +15,11 @@ My Peer ID: <mypeerid></mypeerid>
 <button id="callBtn">Call</button><button>Answer</button>
  <button onclick="webcamOff()">Cam off/on</button>
 
+ <hr>
+ <list>
+
+ </list>
+
 
 
 
@@ -57,18 +62,39 @@ const database = firebase.database();
   </script>
 
   <script>
+
+   
+const peers_list = [];
+
      
-    database.ref('users/Hannah123Arendt').on('value',(snap)=>{
-    console.log(snap.val());
+    var usersRef=database.ref('users/rooms/testroom/users');
+    usersRef.on('value',(snap)=>{
+   // console.log(snap.val());
     snap.forEach(function(childSnapshot) {
       var childKey = childSnapshot.key;
       var childData = childSnapshot.val();
-      console.log(childData.peer_id)
+      console.log(childKey)
+      if(!peers_list.includes(childKey))
+      {
+        //new user
+        $('list').append('<p id="'+childKey+'">'+childKey+' </p>')
+        peers_list.push(childKey)
+
+    callPeer(childKey)
+          }    // database.ref('users/FBTest/'+childKey).onDisconnect().remove();
       // ...
     });
-
+   // database.ref('users/FBTest').child("-N8uxGTm-xHmaosCBMxq").onDisconnect().removeValue();
+     
 
   });
+
+  usersRef.on('child_removed', (data) => {
+  console.log("Removed:"+data.key)
+  $('#'+data.key).remove();
+});
+
+
   </script>
   <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
   <script src="newscript.js"></script>
