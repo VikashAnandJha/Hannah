@@ -1,6 +1,12 @@
-const PRE = "Hannah"
-const SUF = "Arendt"
-var room_id;
+var room_code = getParameterByName('room_code'); 
+ 
+// "lorem"
+
+
+const PRE = ""
+const SUF = ""
+ 
+console.log(room_id)
 var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 var local_stream,remoteStream;
 var screenStream;
@@ -9,6 +15,8 @@ var currentPeer = null
 var screenSharing = false
 var peerList=[];
 var isCordova=false;
+var totalUser=0;
+ 
 var videoOptions = {
       audio: true,
       video: {
@@ -20,9 +28,27 @@ var videoOptions = {
         }
     }
 };
+
+
+if(room_code!=undefined)
+{
+    joinRoom(room_code);
+
+}
+
+
+
+
+
+
+
+
+
+
+
 function createRoom() {
     console.log("Creating Room")
-    let room = document.getElementById("room-input").value;
+    let room = document.getElementById("room-input-create").value;
     if (room == " " || room == "") {
         alert("Please enter room number")
         return;
@@ -57,17 +83,73 @@ function setLocalStream(stream) {
     video.play();
     showAfter();
 }
+
 function setRemoteStream(stream) {
+ 
+
+
 
     let video = document.getElementById("remote-video");
     video.srcObject = stream;
     video.play();
     remoteStream=stream;
+
+    
+    //$('#remote-video').clone().appendTo(".participants");
+   
+  
+
+
+    totalUser++;
     showAfter();
+    console.log(totalUser+" total remote user");
+
 }
 
 function hideModal() {
     document.getElementById("entry-modal").hidden = true
+    // database.ref('users/Hannah123Arendt').on('value',(snap)=>{
+    //     console.log(snap.val());
+    //     snap.forEach(function(childSnapshot) {
+    //       var childKey = childSnapshot.key;
+    //       var childData = childSnapshot.val();
+    
+    //       let room = document.getElementById("room-input").value;
+    // if (room == " " || room == "") {
+    //     alert("Please enter room number")
+    //     return;
+    // }
+    // room_id = PRE + room + SUF;
+    //  getUserMedia(videoOptions, (stream) => {
+    //       let call = peer.call(room_id, stream)
+    //       setRemoteStream(stream);
+          
+    
+    //     });
+    
+    
+    
+           
+    
+    // });
+    
+    // let room = document.getElementById("room-input").value;
+    // if (room == " " || room == "") {
+    //     alert("Please enter room number")
+    //     return;
+    // }
+    // room_id = PRE + room + SUF;
+    // peer = new Peer(room_id)
+    // peer.on('call', (call) => {
+    //     call.answer(local_stream);
+    //     call.on('stream', (stream) => {
+    //         setRemoteStream(stream)
+    //     })
+    //     currentPeer = call;
+    
+    // })
+    
+    //   });
 }
 
 function notify(msg) {
@@ -79,9 +161,10 @@ function notify(msg) {
     }, 3000)
 }
 
-function joinRoom() {
+function joinRoom(room) {
     console.log("Joining Room")
-    let room = document.getElementById("room-input").value;
+    if(room==undefined)
+      room = document.getElementById("room-input-join").value;
     if (room == " " || room == "") {
         alert("Please enter room number")
         return;
@@ -126,11 +209,12 @@ function joinRoom() {
    
 }
 
+
 function startScreenShare() {
     if (screenSharing) {
         stopScreenSharing()
     }
-    navigator.mediaDevices.getDisplayMedia({ video: true }).then((stream) => {
+    navigator.mediaDevices.getDisplayMedia({videoOptions}).then((stream) => {
         screenStream = stream;
         let videoTrack = screenStream.getVideoTracks()[0];
         videoTrack.onended = () => {
@@ -239,3 +323,37 @@ console.log("show")
     },100)
    
 }
+const callCut=function(){//toggle state
+   
+    console.log("closing");
+    handlePeerDisconnect();
+      
+};
+
+function handlePeerDisconnect() {
+    // manually close the peer connections
+    for (let conns in peer.connections) {
+      peer.connections[conns].forEach((conn, index, array) => {
+        console.log(`closing ${conn.connectionId} peerConnection (${index + 1}/${array.length})`, conn.peerConnection);
+        conn.peerConnection.close();
+  
+        // close it using peerjs methods
+        if (conn.close)
+          conn.close();
+      });
+    }
+    window.location.href="index.html";
+  }
+
+  
+
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+

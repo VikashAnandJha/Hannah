@@ -15,18 +15,7 @@
     <body>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg  ">
-            <div class="container" style="display: none;">
-                <a class="navbar-brand" href="#!">JMeet</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
-                    </ul>
-                </div>
-            </div>
+            
         </nav>
         <!-- Page content-->
         <div class="container mt-5">
@@ -40,14 +29,17 @@
                 <div class="col-lg-10">
                    
                     <div class="entry-modal" id="entry-modal">
-                        <img src="./assets/logo.png" width="150"/><br>
-            
+                       
                         <p>Create or Join Meeting</p>
-                        <input id="room-input" class="room-input" placeholder="Enter Room ID" value="123">
+                        <input id="room-input-join" class="room-input-join" placeholder="Enter Room ID">
                          
-                            <button onclick="createRoom()" class="btn btn-primary">Create Room</button>
-                            <button onclick="joinRoom()" class="btn btn-primary">Join Room</button>
-
+                            <button onclick="joinRoom()" class="btn btn-primary">Join A Meeting</button>
+<hr>
+<br>
+<br>
+<input id="room-input-create" class="room-input-create" placeholder="Enter Room ID">
+                        
+<button onclick="createRoom()" class="btn btn-primary">Create A Meeting</button>
                             </div>
                             <div class="meet-area">
                                
@@ -70,12 +62,21 @@
                 </div>
 
             </div>
+            
             <div class="row upit after" style="display: none;">
+                <div class="col-md-12">
+                    <hidebtn>hide</hidebtn>
+                    Your Meeting Code: <br>
+
+                    <input class="meetinglink" type="text" id="meetinglink">
+
+                </div>
                 <div class="col-md-4 offset-md-4">
                     <button class="controlBtn" id="mic" onclick="micOff()"><img src="./assets/mic_off.png" width="24px"/></button>
                     <button class="controlBtn" id="speaker" onclick="speakerOff()"><img src="./assets/speaker_off.png" width="24px"/></button>
                     <button class="controlBtn" id="webcam" onclick="webcamOff()"><img src="./assets/video_off.png" width="24px"/></button>
                     <button class="controlBtn" id="sharescreen" onclick="startScreenShare()"><img src="./assets/present.png" width="24px"/></button>
+                    <button class="controlBtn red" id="callcut" onclick="callCut()"><img src="./assets/call_cut.png" width="24px"/></button>
                   
 
                 </div>
@@ -111,10 +112,17 @@
 const database = firebase.database();
    
    // const database = getDatabase(app);
-
+   var room_id = (Math.random() + 1).toString(36).substring(2);
+$('#room-input-create').val(room_id);
+console.log(room_id)
   </script>
 
 <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 <script src="script.js"></script>
+<script>
+
+    console.log(window.location.href)
+    $('#meetinglink').val(window.location.href+"?room_code="+room_id);
+</script>
     </body>
 </html>
