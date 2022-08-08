@@ -11,17 +11,13 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
         <link rel="stylesheet" href="styles2.css" >
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
     <body>
         
         <!-- Page content-->
         <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-12">
-                   
-                    <p id="notification" hidden></p>
-                    </div>
-                    </div>
+            
             <div class="row">
                 <div class="col-lg-10">
                    
@@ -47,22 +43,29 @@
                        
                 </div>
 
+                <div class="fixed-bottom   after row text-center "  >
+                
+                    <div  class=" col-lg-12 controls upit">
+                        <button class="controlBtn" id="mic" onclick="micOff()"><i class="fa fa-microphone-slash"></i>
+                        </button>
+                        <button class="controlBtn" id="speaker" onclick="speakerOff()">
+                            <i class="fas fa-volume-mute"></i></button>
+                        <button class="controlBtn" id="webcam" onclick="webcamOff()"><i class="fa-solid fa-video-slash"></i>
+                        </button>
+                        <button class="controlBtn" id="sharescreen" onclick="startScreenShare()"  >
+                            <i class="fa-solid fa-desktop"></i></button>
+                        <button class="controlBtn red" id="callcut" onclick="callCut()">
+                            <i class="fa-solid fa-phone-slash"></i> 
+                        </button>
+                      
+    
+                    </div>
+                  </div>
             </div>
             
-            <div class="row upit after" style="display: none;">
-                
-                <div class="col-lg-6 offset-md-3">
-                    <button class="controlBtn" id="mic" onclick="micOff()"><img src="./assets/mic_off.png" width="24px"/></button>
-                    <button class="controlBtn" id="speaker" onclick="speakerOff()"><img src="./assets/speaker_off.png" width="24px"/></button>
-                    <button class="controlBtn" id="webcam" onclick="webcamOff()"><img src="./assets/video_off.png" width="24px"/></button>
-                    <button class="controlBtn" id="sharescreen" onclick="startScreenShare()"  ><img src="./assets/present.png" width="24px"/></button>
-                    <button class="controlBtn red" id="callcut" onclick="callCut()"><img src="./assets/call_cut.png" width="24px"/></button>
-                  
-
-                </div>
-              </div>
+           
             </div> 
-            
+           
             <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
 <!-- Firebase App is always required and must be first -->
