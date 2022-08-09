@@ -12,7 +12,9 @@
         <link href="css/styles.css" rel="stylesheet" />
         <link rel="stylesheet" href="styles2.css" >
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    </head>
+          <link href="http://fonts.cdnfonts.com/css/gilroy-bold" rel="stylesheet">
+ 
+        </head>
     <body>
         
         <!-- Page content-->
@@ -27,14 +29,13 @@
                                 <video muted   id="remote-video" class="remote-video-main"></video> 
                                  
                                 </div>
-                    <div class="meet-controls-bar">
-                        <button onclick="startScreenShare()">Screen Share</button>
-                    </div>
+                  
                 </div>
                 <!-- Side widgets-->
                 <div class="col-lg-2">
                     <img src="./assets/logo.png"  class="logo " />
-
+                     
+                   
                     <div class="participants after"  >
                         <video id="localVideo" muted class="local-video small_vids"  ></video> 
                         <remotearea></remotearea>
@@ -42,10 +43,20 @@
                    
                        
                 </div>
-
+<style>
+  
+</style>
                 <div class="fixed-bottom   after row text-center "  >
-                
+
+                    
+                   
                     <div  class=" col-lg-12 controls upit">
+                        <div class="col-lg-12" id="linkArea">
+                            <i class="fa-solid fa-eye-slash" onclick="hideLink()"></i> Your Meeting Link:<br>
+                           <input type="text" id="meetinglink" class="link"  /> <i class="fa-solid fa-copy" onclick="copy()"></i> 
+                    
+                        </div>
+                       
                         <button class="controlBtn" id="mic" onclick="micOff()"><i class="fa fa-microphone-slash"></i>
                         </button>
                         <button class="controlBtn" id="speaker" onclick="speakerOff()">
@@ -60,6 +71,7 @@
                       
     
                     </div>
+                   
                   </div>
             </div>
             
@@ -163,7 +175,9 @@ console.log(window.location.href)
        
     });
 
-
+    function hideLink() {
+        $('#linkArea').hide();
+    }
     
     function copy() {
   /* Get the text field */
@@ -181,5 +195,5 @@ console.log(window.location.href)
 }
     
       </script>
-    </body>
+       </body>
 </html>
