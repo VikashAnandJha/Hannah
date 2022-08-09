@@ -16,9 +16,7 @@ body{
 
     border-radius: 10px;
 }
-#meetinglink{
-    
-}
+ 
 .title{
     top: 0;
     width: 100%;
@@ -211,5 +209,8 @@ button{
         
         width: 150px;
          
+    }
+    #sharescreen{
+        display: none;
     }
   }
