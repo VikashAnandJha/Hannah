@@ -7,7 +7,7 @@ var screenSharing=false;
 var screenStream;
 
  var localStream;
- var call;
+ let call=null;
  var mypeerid;
  var videoOptions = {
     audio: true,
