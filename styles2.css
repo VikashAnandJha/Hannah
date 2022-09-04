@@ -158,6 +158,12 @@ button{
     cursor: pointer;
 }
 
+.callCutbutton{
+width: 62px;
+height: 62px;
+border-radius: 50%;
+}
+
 @media (min-width: 320px) and (max-width: 1024px) {
     .remote-video-main{
         top: 0;
