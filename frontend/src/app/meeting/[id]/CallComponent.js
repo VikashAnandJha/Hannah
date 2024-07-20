@@ -18,7 +18,13 @@ const CallComponent = ({ meetingId, userName }) => {
 
   useEffect(() => {
     // Initialize socket connection
-    socketRef.current = io("http://localhost:5000", {
+
+    const socketUrl =
+      window.location.hostname === "localhost"
+        ? "http://localhost:5000"
+        : "https://hannah-nextjs.onrender.com";
+
+    socketRef.current = io(socketUrl, {
       transports: ["websocket"],
       upgrade: false,
     });
