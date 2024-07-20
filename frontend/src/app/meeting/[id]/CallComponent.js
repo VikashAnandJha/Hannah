@@ -23,6 +23,7 @@ const CallComponent = ({ meetingId, userName }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const [participantsList, setParticipantsList] = useState([]);
+  const [speakingUser, setUserSpeaking] = useState(userName);
 
   useEffect(() => {
     // Initialize socket connection
@@ -43,7 +44,7 @@ const CallComponent = ({ meetingId, userName }) => {
         "audio coming from ",
         data.userName == userName ? "me" : data.userName
       );
-
+      setUserSpeaking(data.userName);
       if (data.userName == userName) return;
       const audioData = data.audioData;
       const newData = audioData.split(";");
@@ -139,18 +140,29 @@ const CallComponent = ({ meetingId, userName }) => {
 
       <div className="flex flex-col justify-between items-center">
         <div className="flex flex-col flex-grow-1 justify-center mt-4 space-x-2">
-          <div className="flex flex-row flex-grow flex-grow-1 text-center">
+          <div className="flex flex-row flex-grow flex-grow-1 text-center align-middle justify-center">
             <Paper
               square={false}
               elevation={3}
+              className="m-1 flex flex-col justify-center text-center  p-2"
               sx={{
                 width: "50vw",
                 height: "50vh",
-
                 flexGrow: 1,
               }}
-              className="m-1 text-center"
-            />
+            >
+              <div
+                className="text-center flex justify-center align-middle"
+                sx={{
+                  width: "50vw",
+                  height: "50vh",
+
+                  flexGrow: 1,
+                }}
+              >
+                {speakingUser}
+              </div>
+            </Paper>
           </div>
           <span
             style={{
