@@ -1,7 +1,3 @@
-Here's the revised README for your project "Hannah":
-
----
-
 # Hannah
 
 Hannah is a Virtual Meeting Conferencing Solution, utilizing Socket.io for seamless video/audio conferencing and meetings. It supports multiple users, providing a robust and intuitive communication experience.
