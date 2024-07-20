@@ -23,8 +23,8 @@ io.on("connection", (socket) => {
   console.log("new client: ", socket.handshake.auth.username);
   // Handle incoming audio stream
   socket.on("audioStream", (audioData) => {
-    // console.log({ audioData });
-    socket.emit("audioStream", audioData);
+    console.log({ "audio from user: ": audioData.userName });
+    io.emit("audioStream", audioData);
   });
   sendParticipantsList(io);
 

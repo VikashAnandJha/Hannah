@@ -10,6 +10,7 @@ import Image from "next/image";
 
 const CallComponent = ({ meetingId, userName }) => {
   const socketRef = useRef(null);
+  const audioRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const [isRecording, setIsRecording] = useState(false);
@@ -19,6 +20,7 @@ const CallComponent = ({ meetingId, userName }) => {
   useEffect(() => {
     // Initialize socket connection
 
+    audioRef.current = new Audio();
     const socketUrl =
       window.location.hostname === "localhost"
         ? "http://localhost:5000"
@@ -31,12 +33,21 @@ const CallComponent = ({ meetingId, userName }) => {
     socketRef.current.auth = { username: userName };
     socketRef.current.connect();
 
-    socketRef.current.on("audioStream", (audioData) => {
+    socketRef.current.on("audioStream", (data) => {
+      console.log(
+        "audio coming from ",
+        data.userName == userName ? "me" : data.userName
+      );
+
+      if (data.userName == userName) return;
+      const audioData = data.audioData;
       const newData = audioData.split(";");
       newData[0] = "data:audio/ogg;";
       const audioSrc = newData.join(";");
       const audio = new Audio(audioSrc);
-      audio.play();
+
+      audioRef.current = audio;
+      audioRef.current.play();
     });
 
     // Get participants
@@ -70,14 +81,17 @@ const CallComponent = ({ meetingId, userName }) => {
           fileReader.readAsDataURL(audioBlob);
           fileReader.onloadend = () => {
             const base64String = fileReader.result;
-            socketRef.current.emit("audioStream", base64String);
+            const dataToSend = {
+              userName,
+              audioData: base64String,
+            };
+            socketRef.current.emit("audioStream", dataToSend);
           };
           audioChunksRef.current = []; // Clear audio chunks after sending
         });
 
         mediaRecorder.start();
         setIsRecording(true);
-
         const id = setInterval(() => {
           mediaRecorder.stop();
           mediaRecorder.start();
