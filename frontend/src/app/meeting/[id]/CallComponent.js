@@ -14,8 +14,10 @@ import {
   VoiceChat,
 } from "@mui/icons-material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const CallComponent = ({ meetingId, userName }) => {
+  const router = useRouter();
   const socketRef = useRef(null);
   const audioContextRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -148,6 +150,10 @@ const CallComponent = ({ meetingId, userName }) => {
         console.error("Failed to copy text: ", err);
       });
   };
+  const exitFromScreen = () => {
+    stopRecording();
+    router.push("/");
+  };
   return (
     <div className="min-h-screen p-1" onClick={handleUserInteraction}>
       <Participants members={participantsList} />
@@ -212,7 +218,11 @@ const CallComponent = ({ meetingId, userName }) => {
                 </Button>
               )}
 
-              <Button onClick={stopRecording} variant="contained" color="error">
+              <Button
+                onClick={exitFromScreen}
+                variant="contained"
+                color="error"
+              >
                 <CallEnd />
               </Button>
             </div>
