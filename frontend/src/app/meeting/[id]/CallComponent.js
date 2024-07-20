@@ -10,7 +10,7 @@ import Image from "next/image";
 
 const CallComponent = ({ meetingId, userName }) => {
   const socketRef = useRef(null);
-  const audioRef = useRef(null);
+  const audioContextRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const [isRecording, setIsRecording] = useState(false);
@@ -19,8 +19,6 @@ const CallComponent = ({ meetingId, userName }) => {
 
   useEffect(() => {
     // Initialize socket connection
-
-    audioRef.current = new Audio();
     const socketUrl =
       window.location.hostname === "localhost"
         ? "http://localhost:5000"
@@ -44,10 +42,19 @@ const CallComponent = ({ meetingId, userName }) => {
       const newData = audioData.split(";");
       newData[0] = "data:audio/ogg;";
       const audioSrc = newData.join(";");
-      const audio = new Audio(audioSrc);
 
-      audioRef.current = audio;
-      audioRef.current.play();
+      fetch(audioSrc)
+        .then((response) => response.arrayBuffer())
+        .then((arrayBuffer) =>
+          audioContextRef.current.decodeAudioData(arrayBuffer)
+        )
+        .then((audioBuffer) => {
+          const source = audioContextRef.current.createBufferSource();
+          source.buffer = audioBuffer;
+          source.connect(audioContextRef.current.destination);
+          source.start();
+        })
+        .catch((error) => console.error("Error playing audio:", error));
     });
 
     // Get participants
@@ -112,9 +119,21 @@ const CallComponent = ({ meetingId, userName }) => {
     }
   };
 
+  const handleUserInteraction = () => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext ||
+        window.webkitAudioContext)();
+    }
+    if (!isRecording) {
+      startRecording();
+    } else {
+      stopRecording();
+    }
+  };
+
   return (
-    <div className="min-h-screen   p-6">
-      <div className="flex justify-between items-center  ">
+    <div className="min-h-screen p-6" onClick={handleUserInteraction}>
+      <div className="flex justify-between items-center">
         <Image src="/logo.png" alt="logo" width={120} height={30} />
         <h1 className="text-sm font-bold">
           Meeting ID:{" "}
@@ -130,7 +149,7 @@ const CallComponent = ({ meetingId, userName }) => {
         <Grid
           item
           xs={9}
-          className=" p-4 rounded-lg flex flex-col justify-between items-center"
+          className="p-4 rounded-lg flex flex-col justify-between items-center"
         >
           <Paper
             square={false}
@@ -141,7 +160,7 @@ const CallComponent = ({ meetingId, userName }) => {
             }}
             className="min-h-10"
           />
-          <div className=" justify-center mt-4 space-x-2">
+          <div className="justify-center mt-4 space-x-2">
             {!isRecording ? (
               <Button
                 onClick={startRecording}
@@ -149,7 +168,7 @@ const CallComponent = ({ meetingId, userName }) => {
                 variant="contained"
                 color="success"
               >
-                <CallSharp></CallSharp>
+                <CallSharp />
               </Button>
             ) : (
               <Button
@@ -158,7 +177,7 @@ const CallComponent = ({ meetingId, userName }) => {
                 variant="contained"
                 color="error"
               >
-                <CallEnd></CallEnd>
+                <CallEnd />
               </Button>
             )}
           </div>
