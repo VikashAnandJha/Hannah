@@ -5,7 +5,13 @@ import Participants from "./Participants";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { Paper } from "@mui/material";
-import { CallEnd, CallSharp } from "@mui/icons-material";
+import {
+  CallEnd,
+  CallSharp,
+  Mic,
+  MicOff,
+  VoiceChat,
+} from "@mui/icons-material";
 import Image from "next/image";
 
 const CallComponent = ({ meetingId, userName }) => {
@@ -124,65 +130,79 @@ const CallComponent = ({ meetingId, userName }) => {
       audioContextRef.current = new (window.AudioContext ||
         window.webkitAudioContext)();
     }
-    if (!isRecording) {
-      startRecording();
-    } else {
-      stopRecording();
-    }
   };
 
   return (
-    <div className="min-h-screen p-6" onClick={handleUserInteraction}>
-      <div className="flex justify-between items-center">
-        <Image src="/logo.png" alt="logo" width={120} height={30} />
-        <h1 className="text-sm font-bold">
-          Meeting ID:{" "}
-          <span style={{ backgroundColor: "red", color: "white", padding: 5 }}>
-            {meetingId}
-          </span>
-        </h1>
-      </div>
-      <Grid container spacing={2}>
-        <Grid spacing={2} item xs={3} justifyItems={"center"}>
-          <Participants members={participantsList} />
-        </Grid>
-        <Grid
-          item
-          xs={9}
-          className="p-4 rounded-lg flex flex-col justify-between items-center"
-        >
-          <Paper
-            square={false}
-            elevation={3}
-            sx={{
-              width: "80%",
-              height: "70vh",
-            }}
-            className="min-h-10"
-          />
-          <div className="justify-center mt-4 space-x-2">
-            {!isRecording ? (
-              <Button
-                onClick={startRecording}
-                disabled={isRecording}
-                variant="contained"
-                color="success"
-              >
-                <CallSharp />
-              </Button>
-            ) : (
-              <Button
-                onClick={stopRecording}
-                disabled={!isRecording}
-                variant="contained"
-                color="error"
-              >
-                <CallEnd />
-              </Button>
-            )}
+    <div className="min-h-screen p-1" onClick={handleUserInteraction}>
+      <Participants members={participantsList} />
+
+      <div className="flex flex-col justify-between items-center">
+        <div className="flex flex-col flex-grow-1 justify-center mt-4 space-x-2">
+          <div className="flex flex-row flex-grow flex-grow-1 text-center">
+            <Paper
+              square={false}
+              elevation={3}
+              sx={{
+                width: "50vw",
+                height: "50vh",
+
+                flexGrow: 1,
+              }}
+              className="m-1 text-center"
+            />
           </div>
-        </Grid>
-      </Grid>
+          <span
+            style={{
+              marginTop: -50,
+              opacity: 0.6,
+            }}
+          >
+            <Image src="/logo.png" alt="logo" width={120} height={30} />
+          </span>
+
+          <div className="mt-2 p-2 text-center flex flex-row justify-between ">
+            <div>
+              {!isRecording ? (
+                <Button
+                  onClick={startRecording}
+                  disabled={isRecording}
+                  variant="contained"
+                  color="success"
+                >
+                  <CallSharp />
+                </Button>
+              ) : (
+                <Button
+                  onClick={stopRecording}
+                  disabled={!isRecording}
+                  variant="contained"
+                  color="error"
+                >
+                  <CallEnd />
+                </Button>
+              )}
+              {/* <Button variant="contained" color="error">
+                <MicOff />
+              </Button>
+              <Button variant="contained" color="error">
+                <Mic />
+              </Button> */}
+            </div>
+            <div className="ml-3">
+              MeetingID:{" "}
+              <span
+                style={{
+                  backgroundColor: "red",
+                  fontSize: 10,
+                  color: "white",
+                }}
+              >
+                {meetingId}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
