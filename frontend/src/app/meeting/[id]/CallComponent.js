@@ -138,7 +138,16 @@ const CallComponent = ({ meetingId, userName }) => {
         window.webkitAudioContext)();
     }
   };
-
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText(meetingId)
+      .then(() => {
+        alert("Meeting ID copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
+  };
   return (
     <div className="min-h-screen p-1" onClick={handleUserInteraction}>
       <Participants members={participantsList} />
@@ -213,6 +222,7 @@ const CallComponent = ({ meetingId, userName }) => {
                 className="m-1"
                 variant="outlined"
                 startIcon={<CopyAllOutlined />}
+                onClick={copyToClipboard}
               >
                 {meetingId}
               </Button>
