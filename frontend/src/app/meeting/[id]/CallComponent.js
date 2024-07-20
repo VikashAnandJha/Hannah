@@ -24,6 +24,7 @@ const CallComponent = ({ meetingId, userName }) => {
   const [intervalId, setIntervalId] = useState(null);
   const [participantsList, setParticipantsList] = useState([]);
   const [speakingUser, setUserSpeaking] = useState(userName);
+  const [isSomeoneSpeaking, setIsSomeoneSpeaking] = useState(false);
 
   useEffect(() => {
     // Initialize socket connection
@@ -45,6 +46,10 @@ const CallComponent = ({ meetingId, userName }) => {
         data.userName == userName ? "me" : data.userName
       );
       setUserSpeaking(data.userName);
+      setIsSomeoneSpeaking(true);
+      setTimeout(() => {
+        setIsSomeoneSpeaking(false);
+      }, 500);
       if (data.userName == userName) return;
       const audioData = data.audioData;
       const newData = audioData.split(";");
@@ -148,6 +153,7 @@ const CallComponent = ({ meetingId, userName }) => {
               sx={{
                 width: "50vw",
                 height: "50vh",
+                border: isSomeoneSpeaking ? "1px solid green" : "0px",
                 flexGrow: 1,
               }}
             >
