@@ -8,6 +8,7 @@ import { Paper } from "@mui/material";
 import {
   CallEnd,
   CallSharp,
+  CopyAllOutlined,
   Mic,
   MicOff,
   VoiceChat,
@@ -167,38 +168,36 @@ const CallComponent = ({ meetingId, userName }) => {
                   onClick={startRecording}
                   disabled={isRecording}
                   variant="contained"
-                  color="success"
+                  color="error"
+                  className="m-1"
                 >
-                  <CallSharp />
+                  <MicOff />
                 </Button>
               ) : (
                 <Button
                   onClick={stopRecording}
                   disabled={!isRecording}
                   variant="contained"
-                  color="error"
+                  color="info"
+                  className="m-1"
                 >
-                  <CallEnd />
+                  <Mic />
                 </Button>
               )}
-              {/* <Button variant="contained" color="error">
-                <MicOff />
+
+              <Button onClick={stopRecording} variant="contained" color="error">
+                <CallEnd />
               </Button>
-              <Button variant="contained" color="error">
-                <Mic />
-              </Button> */}
             </div>
-            <div className="ml-3">
-              MeetingID:{" "}
-              <span
-                style={{
-                  backgroundColor: "red",
-                  fontSize: 10,
-                  color: "white",
-                }}
+
+            <div>
+              <Button
+                className="m-1"
+                variant="outlined"
+                startIcon={<CopyAllOutlined />}
               >
                 {meetingId}
-              </span>
+              </Button>
             </div>
           </div>
         </div>

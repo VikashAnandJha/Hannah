@@ -19,13 +19,7 @@ function Participants({ members }) {
   console.log(members[0]);
   return (
     <>
-      <div
-        className="flex flex-row justify-center p-0"
-        style={{
-          overflowX: "scroll",
-          padding: 0,
-        }}
-      >
+      <div className="flex flex-row justify-center p-0 participants-container">
         {members.map((user) => (
           <Paper key={user.username} elevation={3} sx={{ margin: 1 }}>
             <Card sx={{ width: 135, height: 125 }}>
@@ -48,6 +42,25 @@ function Participants({ members }) {
           </Paper>
         ))}
       </div>
+      <style jsx>{`
+        .participants-container {
+          overflow-x: auto;
+          scrollbar-width: thin; /* Firefox */
+        }
+
+        .participants-container::-webkit-scrollbar {
+          height: 8px;
+        }
+
+        .participants-container::-webkit-scrollbar-thumb {
+          background-color: rgba(0, 0, 0, 0.2);
+          border-radius: 10px;
+        }
+
+        .participants-container::-webkit-scrollbar-track {
+          background-color: transparent;
+        }
+      `}</style>
     </>
   );
 }
